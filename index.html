@@ -9,7 +9,7 @@
     <style>
         body {
             background: linear-gradient(to bottom, #fff0f5, #ffe6f2);
-            overflow: auto; /* Changed to allow scrolling */
+            overflow: auto;
             font-family: 'Comic Sans MS', cursive;
             min-height: 100vh;
         }
@@ -83,16 +83,16 @@
             border-radius: 20px;
             box-shadow: 0 5px 15px rgba(255, 102, 153, 0.3);
             border: 3px solid #ffccdd;
-            max-height: 500px; /* Limit image height */
+            max-height: 500px;
             object-fit: cover;
         }
-        .letter-line {
+        #letter {
             font-size: 28px;
             color: #ff6699;
             text-shadow: 1px 1px 3px #ffccdd;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            margin: 10px 0;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            line-height: 1.5;
         }
         #main-content {
             padding: 20px 0;
@@ -103,7 +103,7 @@
                 width: 40px;
                 height: 40px;
             }
-            .letter-line {
+            #letter {
                 font-size: 20px;
             }
             .password-box {
@@ -175,18 +175,7 @@
             </div>
             <div class="row justify-content-center mt-4">
                 <div class="col-12 col-md-8 text-center">
-                    <div id="letter">
-                        <div class="letter-line">Hey sweetie,</div>
-                        <div class="letter-line">The moment I met you, my world lit up.</div>
-                        <div class="letter-line">Your smile is my favorite thing ever.</div>
-                        <div class="letter-line">Every second with you feels like magic.</div>
-                        <div class="letter-line">You’re my little star, shining so bright.</div>
-                        <div class="letter-line">I’m so lucky to have you in my life.</div>
-                        <div class="letter-line">You make my heart skip a beat every time.</div>
-                        <div class="letter-line">I just want to hold you close forever.</div>
-                        <div class="letter-line">You’re my everything, my sweet love.</div>
-                        <div class="letter-line">Here’s to us, always and forever!</div>
-                    </div>
+                    <div id="letter"></div>
                 </div>
             </div>
         </div>
@@ -229,14 +218,27 @@
         }
 
         function startLetter() {
-            let lines = document.getElementsByClassName("letter-line");
-            let delay = 0;
-            for (let i = 0; i < lines.length; i++) {
-                setTimeout(() => {
-                    lines[i].style.opacity = "1";
-                }, delay);
-                delay += 1000; // 1 second delay between each line
+            const fullText = `Hey sweetie,
+The moment I met you, my world lit up.
+Your smile is my favorite thing ever.
+Every second with you feels like magic.
+You’re my little star, shining so bright.
+I’m so lucky to have you in my life.
+You make my heart skip a beat every time.
+I just want to hold you close forever.
+You’re my everything, my sweet love.
+Here’s to us, always and forever!`;
+            const letterDiv = document.getElementById("letter");
+            let index = 0;
+
+            function type() {
+                if (index < fullText.length) {
+                    letterDiv.innerHTML = fullText.substring(0, index + 1);
+                    index++;
+                    setTimeout(type, 50); // 50ms delay between each character
+                }
             }
+            type();
         }
 
         function createHearts() {
