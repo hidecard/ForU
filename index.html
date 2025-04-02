@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Romantic Letter</title>
+    <style>
+        body {
+            background: #ffe6f2;
+            overflow: hidden;
+            font-family: Arial;
+        }
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: fall 3s linear infinite;
+        }
+        @keyframes fall {
+            0% { top: -10%; }
+            100% { top: 100%; }
+        }
+        .slides {
+            display: none;
+            width: 100%;
+            max-height: 400px;
+        }
+        .typewriter {
+            font-size: 24px;
+            color: #ff3366;
+            animation: typing 4s steps(30, end);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        #password-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .heart-btn {
+            background: #ff6699;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 50%;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="password-screen">
+        <div>
+            <input type="password" id="pass-input" style="margin-bottom: 10px;">
+            <div>
+                <button class="heart-btn" onclick="addNum(1)">❤️1</button>
+                <button class="heart-btn" onclick="addNum(2)">❤️2</button>
+                <button class="heart-btn" onclick="addNum(3)">❤️3</button>
+                <button class="heart-btn" onclick="addNum(4)">❤️4</button>
+                <button class="heart-btn" onclick="addNum(5)">❤️5</button>
+                <button class="heart-btn" onclick="addNum(6)">❤️6</button>
+                <button class="heart-btn" onclick="addNum(7)">❤️7</button>
+                <button class="heart-btn" onclick="addNum(8)">❤️8</button>
+                <button class="heart-btn" onclick="addNum(9)">❤️9</button>
+                <button class="heart-btn" onclick="addNum(0)">❤️0</button>
+                <button class="heart-btn" onclick="checkPass()">Enter</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-content" style="display:none; text-align:center;">
+        <div class="typewriter">မင်းကို အရမ်းချစ်တယ်...</div>
+        <img class="slides" src="pic1.jpg">
+        <img class="slides" src="pic2.jpg">
+        <img class="slides" src="pic3.jpg">
+        <img class="slides" src="pic4.jpg">
+    </div>
+
+    <script>
+        let pass = "";
+        function addNum(num) {
+            pass += num;
+            document.getElementById("pass-input").value = pass;
+        }
+
+        function checkPass() {
+            if (pass === "1500") {
+                document.getElementById("password-screen").style.display = "none";
+                document.getElementById("main-content").style.display = "block";
+                startSlides();
+                createHearts();
+            }
+        }
+
+        let slideIndex = 0;
+        function startSlides() {
+            let slides = document.getElementsByClassName("slides");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            slides[slideIndex-1].style.display = "block";
+            setTimeout(startSlides, 3000);
+        }
+
+        function createHearts() {
+            setInterval(() => {
+                let heart = document.createElement("div");
+                heart.className = "heart";
+                heart.innerHTML = "❤️";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 3000);
+            }, 200);
+        }
+    </script>
+</body>
+</html>
