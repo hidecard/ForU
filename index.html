@@ -9,8 +9,9 @@
     <style>
         body {
             background: linear-gradient(to bottom, #fff0f5, #ffe6f2);
-            overflow: hidden;
+            overflow: auto; /* Changed to allow scrolling */
             font-family: 'Comic Sans MS', cursive;
+            min-height: 100vh;
         }
         .heart {
             position: absolute;
@@ -21,23 +22,6 @@
             0% { top: -10%; transform: rotate(0deg); }
             100% { top: 100%; transform: rotate(360deg); }
         }
-        .typewriter {
-            font-size: 28px;
-            color: #ff6699;
-            animation: typing 4s steps(60, end), blink 0.5s step-end infinite;
-            white-space: pre-wrap;
-            overflow: hidden;
-            margin: 20px;
-            text-shadow: 1px 1px 3px #ffccdd;
-            line-height: 1.5;
-        }
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        @keyframes blink {
-            50% { border-right: 2px solid #ff6699; }
-        }
         #password-screen {
             position: fixed;
             width: 100%;
@@ -46,6 +30,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
         .password-box {
             background: #fff0f5;
@@ -96,6 +83,19 @@
             border-radius: 20px;
             box-shadow: 0 5px 15px rgba(255, 102, 153, 0.3);
             border: 3px solid #ffccdd;
+            max-height: 500px; /* Limit image height */
+            object-fit: cover;
+        }
+        .letter-line {
+            font-size: 28px;
+            color: #ff6699;
+            text-shadow: 1px 1px 3px #ffccdd;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            margin: 10px 0;
+        }
+        #main-content {
+            padding: 20px 0;
         }
         /* Responsive Adjustments */
         @media (max-width: 576px) {
@@ -103,7 +103,7 @@
                 width: 40px;
                 height: 40px;
             }
-            .typewriter {
+            .letter-line {
                 font-size: 20px;
             }
             .password-box {
@@ -163,19 +163,7 @@
         </div>
     </div>
 
-    <div id="main-content" style="display:none; text-align:center;">
-        <div class="typewriter">
-Hey sweetie,  
-The moment I met you, my world lit up.  
-Your smile is my favorite thing ever.  
-Every second with you feels like magic.  
-You’re my little star, shining so bright.  
-I’m so lucky to have you in my life.  
-You make my heart skip a beat every time.  
-I just want to hold you close forever.  
-You’re my everything, my sweet love.  
-Here’s to us, always and forever!  
-        </div>
+    <div id="main-content" style="display:none;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-8">
@@ -183,6 +171,22 @@ Here’s to us, always and forever!
                     <img class="slides img-fluid" src="https://images.unsplash.com/photo-1506869640319-fe1a24fd45dc?q=80&w=1470&auto=format&fit=crop" alt="Heart balloons">
                     <img class="slides img-fluid" src="https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?q=80&w=1464&auto=format&fit=crop" alt="Romantic sunset">
                     <img class="slides img-fluid" src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1470&auto=format&fit=crop" alt="Love flowers">
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-12 col-md-8 text-center">
+                    <div id="letter">
+                        <div class="letter-line">Hey sweetie,</div>
+                        <div class="letter-line">The moment I met you, my world lit up.</div>
+                        <div class="letter-line">Your smile is my favorite thing ever.</div>
+                        <div class="letter-line">Every second with you feels like magic.</div>
+                        <div class="letter-line">You’re my little star, shining so bright.</div>
+                        <div class="letter-line">I’m so lucky to have you in my life.</div>
+                        <div class="letter-line">You make my heart skip a beat every time.</div>
+                        <div class="letter-line">I just want to hold you close forever.</div>
+                        <div class="letter-line">You’re my everything, my sweet love.</div>
+                        <div class="letter-line">Here’s to us, always and forever!</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -207,6 +211,7 @@ Here’s to us, always and forever!
                 document.getElementById("password-screen").style.display = "none";
                 document.getElementById("main-content").style.display = "block";
                 startSlides();
+                startLetter();
                 createHearts();
             }
         }
@@ -221,6 +226,17 @@ Here’s to us, always and forever!
             if (slideIndex > slides.length) { slideIndex = 1 }
             slides[slideIndex-1].style.display = "block";
             setTimeout(startSlides, 3000);
+        }
+
+        function startLetter() {
+            let lines = document.getElementsByClassName("letter-line");
+            let delay = 0;
+            for (let i = 0; i < lines.length; i++) {
+                setTimeout(() => {
+                    lines[i].style.opacity = "1";
+                }, delay);
+                delay += 1000; // 1 second delay between each line
+            }
         }
 
         function createHearts() {
