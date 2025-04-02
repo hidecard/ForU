@@ -4,9 +4,9 @@
     <title>Romantic Letter</title>
     <style>
         body {
-            background: #ffe6f2;
+            background: linear-gradient(to bottom, #ffe6f2, #fff0f5);
             overflow: hidden;
-            font-family: Arial;
+            font-family: 'Comic Sans MS', Arial, sans-serif;
         }
         .heart {
             position: absolute;
@@ -21,13 +21,17 @@
             display: none;
             width: 100%;
             max-height: 400px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .typewriter {
-            font-size: 24px;
+            font-size: 28px;
             color: #ff3366;
             animation: typing 4s steps(30, end);
             white-space: nowrap;
             overflow: hidden;
+            margin: 20px;
+            text-shadow: 1px 1px 2px #ff99cc;
         }
         @keyframes typing {
             from { width: 0; }
@@ -37,89 +41,59 @@
             position: fixed;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.7);
             display: flex;
             justify-content: center;
             align-items: center;
         }
+        .password-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(255, 102, 153, 0.5);
+            text-align: center;
+        }
+        #pass-input {
+            padding: 10px;
+            border: 2px solid #ff99cc;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            width: 150px;
+        }
         .heart-btn {
             background: #ff6699;
             border: none;
-            padding: 10px;
+            padding: 0;
             margin: 5px;
             cursor: pointer;
-            border-radius: 50%;
+            width: 50px;
+            height: 50px;
             color: white;
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+        .heart-btn:hover {
+            transform: scale(1.1);
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 250px;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
     <div id="password-screen">
-        <div>
-            <input type="password" id="pass-input" style="margin-bottom: 10px;">
-            <div>
-                <button class="heart-btn" onclick="addNum(1)">❤️1</button>
-                <button class="heart-btn" onclick="addNum(2)">❤️2</button>
-                <button class="heart-btn" onclick="addNum(3)">❤️3</button>
-                <button class="heart-btn" onclick="addNum(4)">❤️4</button>
-                <button class="heart-btn" onclick="addNum(5)">❤️5</button>
-                <button class="heart-btn" onclick="addNum(6)">❤️6</button>
-                <button class="heart-btn" onclick="addNum(7)">❤️7</button>
-                <button class="heart-btn" onclick="addNum(8)">❤️8</button>
-                <button class="heart-btn" onclick="addNum(9)">❤️9</button>
-                <button class="heart-btn" onclick="addNum(0)">❤️0</button>
-                <button class="heart-btn" onclick="checkPass()">Enter</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="main-content" style="display:none; text-align:center;">
-        <div class="typewriter">မင်းကို အရမ်းချစ်တယ်...</div>
-        <img class="slides" src="pic1.jpg">
-        <img class="slides" src="pic2.jpg">
-        <img class="slides" src="pic3.jpg">
-        <img class="slides" src="pic4.jpg">
-    </div>
-
-    <script>
-        let pass = "";
-        function addNum(num) {
-            pass += num;
-            document.getElementById("pass-input").value = pass;
-        }
-
-        function checkPass() {
-            if (pass === "1500") {
-                document.getElementById("password-screen").style.display = "none";
-                document.getElementById("main-content").style.display = "block";
-                startSlides();
-                createHearts();
-            }
-        }
-
-        let slideIndex = 0;
-        function startSlides() {
-            let slides = document.getElementsByClassName("slides");
-            for (let i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            slideIndex++;
-            if (slideIndex > slides.length) { slideIndex = 1 }
-            slides[slideIndex-1].style.display = "block";
-            setTimeout(startSlides, 3000);
-        }
-
-        function createHearts() {
-            setInterval(() => {
-                let heart = document.createElement("div");
-                heart.className = "heart";
-                heart.innerHTML = "❤️";
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 3000);
-            }, 200);
-        }
-    </script>
-</body>
-</html>
+        <div class="password-box">
+            <input type="password" id="pass-input" placeholder="Enter Code">
+            <div class="button-grid">
+                <button class="heart-btn" onclick="addNum(1)"><svg width="50" height="50" viewBox="0 0 24 24" fill="#ff6699"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/><text x="12" y="16" fill="white" text-anchor="middle" font-size="10">1</text></svg></button>
+                <button class="heart-btn" onclick="addNum(2)"><svg width="50" height="50" viewBox="0 0 24 24" fill="#ff6699"><path d="M12 21.35l-1.45-1.32C5.4 15
