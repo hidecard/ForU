@@ -17,10 +17,20 @@
             position: absolute;
             font-size: 20px;
             animation: fall 3s linear infinite;
+            cursor: pointer;
         }
         @keyframes fall {
             0% { top: -10%; transform: rotate(0deg); }
             100% { top: 100%; transform: rotate(360deg); }
+        }
+        .small-heart {
+            position: absolute;
+            font-size: 10px;
+            animation: burst 1s ease-out forwards;
+        }
+        @keyframes burst {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(2) translateY(-20px); }
         }
         #password-screen {
             position: fixed;
@@ -88,6 +98,38 @@
         #main-content {
             padding: 20px 0;
         }
+        #gift-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #ff6699;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            transition: transform 0.3s ease;
+        }
+        #gift-box:hover {
+            transform: scale(1.1);
+        }
+        #gift-content {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: #fff0f5;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px dashed #ff99cc;
+            box-shadow: 0 0 10px rgba(255, 102, 153, 0.4);
+            text-align: center;
+            color: #ff6699;
+            font-size: 18px;
+        }
         @media (max-width: 576px) {
             .heart-btn {
                 width: 40px;
@@ -105,11 +147,19 @@
             .slides {
                 max-height: 300px;
             }
+            #gift-box {
+                width: 50px;
+                height: 50px;
+                font-size: 25px;
+            }
+            #gift-content {
+                font-size: 16px;
+                max-width: 200px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- နောက်ခံဂီတ ထည့်ထားပြီး autoplay မထည့်ပါ -->
     <audio id="bg-music" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
         Your browser does not support the audio element.
@@ -159,7 +209,6 @@
         </div>
     </div>
 
-    <!-- Wrong Password Modal -->
     <div class="modal fade" id="wrongPassModal" tabindex="-1" aria-labelledby="wrongPassModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="background: #fff0f5; border: 2px dashed #ff99cc;">
@@ -193,14 +242,14 @@
                 </div>
             </div>
         </div>
+        <div id="gift-box" onclick="unwrapGift()">🎁</div>
+        <div id="gift-content">💖 Good for one big hug! 💖</div>
     </div>
 
-    <!-- Bootstrap JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        // နောက်ခံဂီတ အသံထိန်းရန်
         const audio = document.getElementById("bg-music");
-        audio.volume = 0.2; // အသံကို 20% လျှော့ထားပါတယ်
+        audio.volume = 0.2;
 
         let pass = "";
         function addNum(num) {
@@ -224,10 +273,9 @@
                 startLetter();
                 createHearts();
             } else {
-                // Password မှားရင် modal ပြ
                 const wrongPassModal = new bootstrap.Modal(document.getElementById("wrongPassModal"));
                 wrongPassModal.show();
-                clearPass(); // Input ကို ရှင်းပစ်မယ်
+                clearPass();
             }
         }
 
@@ -275,9 +323,37 @@ Here’s to us, always and forever!`;
                 heart.style.left = Math.random() * 100 + "vw";
                 heart.style.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
                 heart.style.fontSize = `${Math.random() * 20 + 10}px`;
+                heart.onclick = function() { burstHeart(this); };
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), 3000);
             }, 150);
+        }
+
+        function burstHeart(heart) {
+            const rect = heart.getBoundingClientRect();
+            for (let i = 0; i < 5; i++) {
+                let smallHeart = document.createElement("div");
+                smallHeart.className = "small-heart";
+                smallHeart.innerHTML = "❤️";
+                smallHeart.style.left = rect.left + "px";
+                smallHeart.style.top = rect.top + "px";
+                smallHeart.style.color = heart.style.color;
+                smallHeart.style.transform = `translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px)`;
+                document.body.appendChild(smallHeart);
+                setTimeout(() => smallHeart.remove(), 1000);
+            }
+            heart.remove();
+        }
+
+        function unwrapGift() {
+            const giftBox = document.getElementById("gift-box");
+            const giftContent = document.getElementById("gift-content");
+            giftBox.style.display = "none";
+            giftContent.style.display = "block";
+            setTimeout(() => {
+                giftContent.style.display = "none";
+                giftBox.style.display = "flex";
+            }, 5000); // Gift reappears after 5 seconds
         }
     </script>
 </body>
