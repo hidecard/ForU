@@ -159,6 +159,24 @@
         </div>
     </div>
 
+    <!-- Wrong Password Modal -->
+    <div class="modal fade" id="wrongPassModal" tabindex="-1" aria-labelledby="wrongPassModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: #fff0f5; border: 2px dashed #ff99cc;">
+                <div class="modal-header" style="border-bottom: none;">
+                    <h5 class="modal-title" id="wrongPassModalLabel" style="color: #ff6699; text-shadow: 1px 1px 3px #ffccdd;">Oops!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="color: #ff6699; font-size: 18px;">
+                    Password မှားနေပါတယ်။ ထပ်ကြိုးစားကြည့်ပါနော်! 💖
+                </div>
+                <div class="modal-footer" style="border-top: none;">
+                    <button type="button" class="heart-btn" data-bs-dismiss="modal"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="#ff6699"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/><text x="12" y="16" fill="white" text-anchor="middle" font-size="8">OK</text></svg></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="main-content" style="display:none;">
         <div class="container">
             <div class="row justify-content-center">
@@ -199,13 +217,17 @@
             if (pass === "1500") {
                 document.getElementById("password-screen").style.display = "none";
                 document.getElementById("main-content").style.display = "block";
-                // Password မှန်တဲ့အခါ အသံဖွင့်ပေးမယ်
                 audio.play().catch(error => {
                     console.log("Audio play failed:", error);
                 });
                 startSlides();
                 startLetter();
                 createHearts();
+            } else {
+                // Password မှားရင် modal ပြ
+                const wrongPassModal = new bootstrap.Modal(document.getElementById("wrongPassModal"));
+                wrongPassModal.show();
+                clearPass(); // Input ကို ရှင်းပစ်မယ်
             }
         }
 
